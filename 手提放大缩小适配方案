@@ -1,4 +1,4 @@
-
+1.
 //计算通过缩放还原比例
 document.getElementsByTagName（'body'）[0] .style.zoom = 1 / window.devicePixelRatio
 //根据放大倍数增加适应代码
@@ -6,6 +6,63 @@ document.getElementsByTagName（'body'）[0] .style.zoom = 1 / window.devicePixe
         } else if (window.devicePixelRatio == 1.25) {
         } else if (window.devicePixelRatio == 1.5) {
         }
+2.
+首先，单独的响应式布局hold不住这个问题，因为出问题的是device-pixel-ratio。
+问题现象是高分屏下整好的东西，在普分屏下会放大；而普分屏下整好的东西，在高分屏上会缩小。
+重现这个问题不需要高分屏，直接用Ctrl++或者Ctrl+-出来的效果是跟高分屏一致的（所以搞定这个问题之后，也可以同时预防用户误触网页缩放）。另外恢复是Ctrl+Num0
+解决的关键就是你得在媒体适配里写device-pixel-ratio单独适配像素比；另外，需要把绝大多数组件由px单位转换为rem单位，因为需要在前边提到的device-pixel-ratio里调节:root的font-size，以达到动态缩放的目的
+（加上兼容）写好以后的代码类似：
+
+@media all
+and (-moz-min-device-pixel-ratio: 1.09) and (-moz-max-device-pixel-ratio: 1.18),
+    (-webkit-min-device-pixel-ratio: 1.09) and (-webkit-max-device-pixel-ratio: 1.18),
+    (min-resolution: 1.09dppx) and (max-resolution: 1.18dppx) {
+    :root {
+        font-size: 14px;
+    }
+}
+@media all
+and (-moz-min-device-pixel-ratio: 1.19) and (-moz-max-device-pixel-ratio: 1.28),
+    (-webkit-min-device-pixel-ratio: 1.19) and (-webkit-max-device-pixel-ratio: 1.28),
+    (min-resolution: 1.19dppx) and (max-resolution: 1.28dppx) {
+    :root {
+        font-size: 13px;
+    }
+}
+@media all
+and (-moz-min-device-pixel-ratio: 1.29) and (-moz-max-device-pixel-ratio: 1.4),
+    (-webkit-min-device-pixel-ratio: 1.29) and (-webkit-max-device-pixel-ratio: 1.4),
+    (min-resolution: 1.29dppx) and (max-resolution: 1.4dppx) {
+    :root {
+        font-size: 12px;
+    }
+}
+@media all
+and (-moz-min-device-pixel-ratio: 1.41) and (-moz-max-device-pixel-ratio: 1.6),
+    (-webkit-min-device-pixel-ratio: 1.41) and (-webkit-max-device-pixel-ratio: 1.6),
+    (min-resolution: 1.41dppx) and (max-resolution: 1.6dppx) {
+    :root {
+        font-size: 10px;
+    }
+}
+@media all
+and (-moz-min-device-pixel-ratio: 1.61) and (-moz-max-device-pixel-ratio: 1.8),
+    (-webkit-min-device-pixel-ratio: 1.61) and (-webkit-max-device-pixel-ratio: 1.8),
+    (min-resolution: 1.61dppx) and (max-resolution: 1.8dppx) {
+    :root {
+        font-size: 9px;
+    }
+}
+@media all
+and (-moz-min-device-pixel-ratio: 1.81) and (-moz-max-device-pixel-ratio: 2.1),
+    (-webkit-min-device-pixel-ratio: 1.81) and (-webkit-max-device-pixel-ratio: 2.1),
+    (min-resolution: 1.81dppx) and (max-resolution: 2.1dppx) {
+    :root {
+        font-size: 8px;
+    }
+}	
+
+
 
 //案例
 class DevicePixelRatio {
