@@ -1,1 +1,10 @@
 
+//计算通过缩放还原比例
+document.getElementsByTagName（'body'）[0] .style.zoom = 1 / window.devicePixelRatio
+//根据放大倍数增加适应代码
+        if (window.devicePixelRatio == 1) {
+        } else if (window.devicePixelRatio == 1.25) {
+        } else if (window.devicePixelRatio == 1.5) {
+        }
+
+        
